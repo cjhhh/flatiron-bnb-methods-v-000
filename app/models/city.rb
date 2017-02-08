@@ -4,7 +4,12 @@ class City < ActiveRecord::Base
   has_many :reservations, through: :listings
 
   def city_openings(start_date, end_date)
-    self.reservations.where(:id => listing.id)
+    reservations.each do |r|
+      if r.listing.vacant?(start_date, end_date)
+        r.listing
+      end
+    end
   end
+
 
 end

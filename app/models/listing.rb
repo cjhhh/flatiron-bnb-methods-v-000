@@ -11,6 +11,26 @@ class Listing < ActiveRecord::Base
   has_many :reviews, :through => :reservations
   has_many :guests, :class_name => "User", :through => :reservations
 
+  # def all_reservations
+  #   self.reservations
+  # end
+
+
+  def vacant?(start_date, end_date)
+     reservations.collect do |r|
+      reserved_dates = r.checkin..r.checkout
+        desired_date_range = start_date..end_date
+      if reserved_dates != desired_date_range
+        true
+      else
+        false
+      end
+     end
+  end
+
+
+
+
   private
 
   def host_status_change
@@ -24,6 +44,8 @@ class Listing < ActiveRecord::Base
       host1.update_column(:host, "false")
      end
   end
+
+
 
   # def average_review_rating
   #
